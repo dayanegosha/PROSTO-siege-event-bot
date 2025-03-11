@@ -4,6 +4,6 @@ Bot for St. Petersburg GBU "SIMPLY" as part of the campaign for the day of lifti
 
 - The ID of the bot administrator in the file - bot.py
 
-- Comments on the main functions of the bot are attached in the same file
+- Comments on the main functions of the bot are attached in the same file.
 
-- Two databases for storing users inside the package
+- A database for storing users inside the package
