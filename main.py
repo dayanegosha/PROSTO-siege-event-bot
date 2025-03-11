@@ -64,10 +64,10 @@ QUIZ = load_quiz_questions()  # Теперь вопросы загружаютс
 
 # Template for content blocks with full file paths
 CONTENT_BLOCKS = [
-    ("Эвакуация", "AgACAgIAAxkDAAIBnmeRIJfr8xLVLsFQ8a6fqFwCD7d9AAKW5zEbesGJSIpKNJOhooPWAQADAgADbQADNgQ", "CQACAgIAAxkDAAIF4meSjfCBYh9qTiGgNFawgBR9FWEyAALfbgAC-u6QSFCKWpoL_ezWNgQ"),
-    ("Маленькие ленинградцы", "AgACAgIAAxkDAAIBoWeRIKTGYJL_J3H1t585lcyCrFcTAAKY5zEbesGJSAABaksMkkOwagEAAwIAA3kAAzYE", "CQACAgIAAxkDAAIF5WeSjfPWUQhSFiVObVrlBFnOPaXnAALgbgAC-u6QSF3-A4NUvLJrNgQ"),
-    ("Театр", "AgACAgIAAxkDAAIBpGeRIKiirXIoMnUx64W5f8PC2rIqAAKZ5zEbesGJSKhFGMTAqQQqAQADAgADeQADNgQ", "CQACAgIAAxkDAAIF6GeSjfX6jCPW9MXB4GVltCBvTl2mAALhbgAC-u6QSNyXMwfhyvcINgQ"),
-    ("Восстановление", "AgACAgIAAxkDAAIBp2eRIK3Qlzblb59o_rA4kc6rxKayAAKa5zEbesGJSEgTets4zGh4AQADAgADeQADNgQ", "CQACAgIAAxkDAAIF62eSjfbr3fHmkxtylSRqb9ynXBiyAALjbgAC-u6QSN6YgaV8QBLlNgQ")
+    ("Эвакуация", ""),
+    ("Маленькие ленинградцы", ""),
+    ("Театр", ""),
+    ("Восстановление", "")
 ]
 
 # Keyboards
