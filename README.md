@@ -1,4 +1,4 @@
-Bot for St. Petersburg GBU "SIMPLY" as part of the campaign for the day of lifting the siege of Leningrad
+Bot for St. Petersburg GBU "PROSTO" as part of the campaign for the day of lifting the siege of Leningrad
 
 - The API key (token) of the bot is already in the code, the file is bot.py
 
