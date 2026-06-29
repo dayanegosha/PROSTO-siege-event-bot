@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Local database with user data — never commit it
+users_data.db
+*.sqlite
+*.sqlite3
+
+# Generated exports
+*.xlsx
+
+# Env & secrets
+.env
+.env.*
+
+# OS junk
+.DS_Store
+Thumbs.db

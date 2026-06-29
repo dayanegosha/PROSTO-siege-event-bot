@@ -9,8 +9,10 @@ import os
 import xlsxwriter
 import pytz
 
-# Bot token
-BOT_TOKEN = 'your_api_token'
+# Bot token — read from the environment, never hardcode it
+BOT_TOKEN = os.getenv("BOT_TOKEN", "")
+if not BOT_TOKEN:
+    raise SystemExit("Set the BOT_TOKEN environment variable (see README).")
 
 # Initialize bot and dispatcher
 bot = Bot(token=BOT_TOKEN)
@@ -38,8 +40,8 @@ if 'phone_number' not in column_names:
     cursor.execute("ALTER TABLE users ADD COLUMN phone_number TEXT;")
     conn.commit()
 
-# Admin ID
-ADMIN_ID = 1291677361
+# Admin ID — the Telegram user allowed to manage the bot and export results
+ADMIN_ID = int(os.getenv("ADMIN_ID", "0"))
 
 # Bot states
 USER_STATES = {}
