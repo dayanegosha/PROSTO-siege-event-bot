@@ -1,4 +1,14 @@
-# PROSTO — Siege of Leningrad event bot
+<div align="center">
+
+# PROSTO — Siege of Leningrad
+
+**Telegram event bot for an interactive historical campaign**
+
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776ab?logo=python&logoColor=white)](requirements.txt)
+[![Telegram](https://img.shields.io/badge/Telegram-aiogram-26a5e4?logo=telegram&logoColor=white)](main.py)
+[![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f.svg)](LICENSE)
+
+</div>
 
 A Telegram bot built for the St. Petersburg state institution **GBU «PROSTO»**
 ([prostospb.team](https://www.prostospb.team/)) as part of the campaign marking
