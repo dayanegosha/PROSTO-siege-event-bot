@@ -16,6 +16,7 @@ users_data.db
 # Env & secrets
 .env
 .env.*
+!.env.example
 
 # OS junk
 .DS_Store

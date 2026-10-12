@@ -1,72 +1,117 @@
-<div align="center">
+# PROSTO — «Письма, сохранившие память»
 
-# PROSTO — Siege of Leningrad
+Telegram-бот сопровождал посетителей исторической экспозиции о блокаде
+Ленинграда. Он последовательно открывает материалы выставки, проводит
+викторину, сохраняет результат участника и формирует XLSX-отчёт для
+организатора.
 
-**Telegram event bot for an interactive historical campaign**
+Проект создан для петербургского государственного учреждения
+[«ПРОСТО»](https://www.prostospb.team/). В репозитории нет фотографий и
+аудиозаписей экспозиции: их можно подключить через отдельный файл конфигурации.
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776ab?logo=python&logoColor=white)](requirements.txt)
-[![Telegram](https://img.shields.io/badge/Telegram-aiogram-26a5e4?logo=telegram&logoColor=white)](main.py)
-[![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f.svg)](LICENSE)
+## Возможности
 
-</div>
+- четыре последовательных раздела экспозиции;
+- вопросы и варианты ответов из JSON;
+- один принимаемый ответ на каждый вопрос;
+- хранение результатов и контактов в локальной SQLite-базе;
+- административный просмотр, удаление и экспорт результатов;
+- московское время прохождения;
+- совместимость с ранее созданной таблицей `users`.
 
-A Telegram bot built for the St. Petersburg state institution **GBU «PROSTO»**
-([prostospb.team](https://www.prostospb.team/)) as part of the campaign marking
-the anniversary of the **lifting of the Siege of Leningrad**.
+## Структура
 
-Visitors take a short historical **quiz**, leave their contact details to take
-part in the event, and an administrator can export all responses to an Excel
-report.
+```text
+.
+├── main.py                       # короткая точка входа
+├── content_blocks.json           # разделы и медиафайлы экспозиции
+├── quiz_questions.json           # вопросы викторины
+├── prosto_bot/
+│   ├── app.py                    # сборка приложения и запуск polling
+│   ├── config.py                 # переменные окружения и пути
+│   ├── content.py                # проверка конфигурации экспозиции
+│   ├── database.py               # SQLite и миграции схемы
+│   ├── quiz.py                   # вопросы и состояние участника
+│   ├── visitor_handlers.py       # маршрут посетителя
+│   ├── admin_handlers.py         # панель организатора
+│   ├── keyboards.py              # Telegram-клавиатуры
+│   ├── reports.py                # XLSX-отчёт
+│   └── texts.py                  # длинные тексты сообщений
+└── tests/                        # проверки данных, базы и викторины
+```
 
-## Features
+Такое разделение оставляет Telegram-обработчики короткими, а правила
+викторины и работу базы можно проверять без запуска бота.
 
-- 8-question quiz on the history of the Siege of Leningrad (`quiz_questions.json`)
-- Collects participant details (name, phone) into a local SQLite database
-- One-tap phone sharing via Telegram's contact button
-- Admin tools: view participants, delete a record, and **export everything to
-  `.xlsx`** with timestamps in Moscow time
-- Self-healing schema — missing columns are added on startup
+## Запуск
 
-## Requirements
-
-- Python 3.10+
-- A bot token from [@BotFather](https://t.me/BotFather)
-
-## Setup
+Требуется Python 3.10 или новее.
 
 ```bash
 git clone https://github.com/dayanegosha/PROSTO-siege-event-bot.git
 cd PROSTO-siege-event-bot
 
 python3 -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\activate
+source .venv/bin/activate
 pip install -r requirements.txt
+
+cp .env.example .env
 ```
 
-## Run
-
-Both the token and the admin id are read from the environment — nothing is
-hardcoded:
+Бот читает настройки из окружения. Файл `.env` приведён как памятка и не
+загружается автоматически, чтобы способ запуска оставался явным:
 
 ```bash
-export BOT_TOKEN="123456:your-token-here"   # from @BotFather
-export ADMIN_ID="123456789"                 # your Telegram user id
+export BOT_TOKEN="123456:token-from-botfather"
+export ADMIN_ID="123456789"
+export PRIZE_DEADLINE="2024-01-27"
 python main.py
 ```
 
-The bot creates `users_data.db` on first run. That file holds participants'
-personal data and is git-ignored — keep it out of version control.
+| Переменная | Назначение | Значение по умолчанию |
+| --- | --- | --- |
+| `BOT_TOKEN` | токен Telegram-бота | обязательна |
+| `ADMIN_ID` | Telegram ID организатора | `0`, панель отключена |
+| `PRIZE_DEADLINE` | последний день выдачи приза, `YYYY-MM-DD` | `2024-01-27` |
+| `DATABASE_PATH` | путь к SQLite-базе | `users_data.db` |
+| `QUIZ_PATH` | путь к вопросам | `quiz_questions.json` |
+| `CONTENT_PATH` | путь к разделам выставки | `content_blocks.json` |
+| `LOG_LEVEL` | уровень журналирования | `INFO` |
 
-## Project layout
+Пустое значение `PRIZE_DEADLINE` отключает сообщение о призе.
 
+## Материалы экспозиции
+
+В `content_blocks.json` у каждого раздела есть заголовок, переход к следующему
+планшету и два необязательных поля:
+
+```json
+{
+  "title": "Эвакуация",
+  "photo": "media/evacuation.jpg",
+  "audio": "media/evacuation.mp3",
+  "transition": "Перейдите к следующему планшету."
+}
 ```
-PROSTO-siege-event-bot/
-├── main.py              # bot logic, quiz flow, admin panel, xlsx export
-├── quiz_questions.json  # quiz questions, options and correct answers
-├── requirements.txt
-└── README.md
+
+`photo` и `audio` принимают локальный путь или уже загруженный Telegram file ID.
+Если оставить поле пустым, бот отправит только заголовок раздела.
+
+## Проверка
+
+```bash
+python -m compileall -q main.py prosto_bot tests
+python -m unittest discover -v
 ```
 
-## License
+Те же команды выполняются в GitHub Actions после каждого изменения `main`.
+
+## Данные участников
+
+`users_data.db`, выгрузки `.xlsx`, `.env` и другие локальные файлы не попадают
+в Git. База содержит имя Telegram, ID, телефон и результат викторины, поэтому
+доступ к машине с запущенным ботом должен быть только у организаторов.
+
+## Лицензия
 
 [MIT](LICENSE) © George Zhurik
