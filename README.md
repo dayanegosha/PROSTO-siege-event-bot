@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/project-card.svg" alt="PROSTO-siege-event-bot project card" width="100%" /></p>
+
 # PROSTO — «Письма, сохранившие память»
 
 Telegram-бот сопровождал посетителей исторической экспозиции о блокаде
